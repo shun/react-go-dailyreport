@@ -1,0 +1,58 @@
+version: "3.7"
+
+x-common:
+  - &LOCALUID 1000
+  - &LOCALGID 1000
+  - &DB_PASS "test"
+  - &DB_USER "test"
+  - &DB_NAME "testdb"
+  - &WORKUSR "app"
+
+services:
+  backend:
+    image: kudoshunsuke/golang-echo:1.14-buster
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+      args:
+        WORKUSR: *WORKUSR
+
+    depends_on:
+      - db
+    environment:
+      LOCALGID: *LOCALGID
+      LOCALUID: *LOCALUID
+      DB_NAME: *DB_NAME
+      DB_USER: *DB_USER
+      DB_PASS: *DB_PASS
+      DB_HOST: db
+      DB_PORT: 3306
+      WORKUSR: *WORKUSR
+    volumes:
+      - ./backend/app:/home/app/app
+      - ./backend/entrypoint.sh:/entrypoint.sh
+    command: ["go", "run", "main.go"]
+    entrypoint: /entrypoint.sh
+    ports:
+      - "13000:3000"
+
+  db:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: 'maria'
+      MYSQL_DATABASE: *DB_NAME
+      MYSQL_USER: *DB_USER
+      MYSQL_PASSWORD: *DB_PASS
+      MYSQL_ALLOW_EMPTY_PASSWORD: 0
+      MYSQL_INITDB_SKIP_TZINFO: 'yes'
+
+    command: "mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "23306:3306"
+
+volumes:
+  mysql:
+    driver: "local"
+
