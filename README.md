@@ -6,9 +6,9 @@ This repository is sinmple Daily report system.
 
 # Architecture
 
-frontend: react
-backend: golang(Echo)
-DB: Mariadb
+- frontend: react
+- backend: golang(Echo)
+- DB: Mariadb
 
 ---
 
