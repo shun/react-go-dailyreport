@@ -9,6 +9,18 @@ x-common:
   - &WORKUSR "app"
 
 services:
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "18080:8080"
+    tty: true
+    command: bash
+    volumes:
+      - ./frontend/src:/home/node/frontapp/src
+      - ./frontend/package.json:/home/node/frontapp/package.json
+
   backend:
     image: kudoshunsuke/golang-echo:1.14-buster
     build:
