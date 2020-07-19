@@ -47,19 +47,20 @@
                       :items="categories"
                       item-text="name"
                       item-value="val"
-                      v-model="defaultCateval"
+                      v-model="taskrow.category"
+                      return-object
                     >
                     </v-select>
                   </td>
                   <td>
                     <v-text-field
-                      v-bind:value="taskrow.task"
+                      v-model="taskrow.task"
                     />
                   </td>
                   <td>
                     <v-text-field
                       placeholder="例:1.00"
-                      v-bind:value="taskrow.estimate"
+                      v-model="taskrow.estimate"
                     />
                   </td>
                   <td>
@@ -76,6 +77,12 @@
         </v-col>
       </v-row>
 
+      <v-row justify="center">
+        <v-col cols="12">
+          <v-textarea outlined placeholder="追加報告がある場合はこちらに追記してください">
+          </v-textarea>
+        </v-col>
+      </v-row>
       <v-row justify="center">
         <v-btn color="error" @click="onSubmit" x-large width="200">登録</v-btn>
       </v-row>
@@ -128,6 +135,7 @@ export default class RegistryComp extends Vue {
   taskrows: Taskinfo[];
   categories: Category[];
   defaultCateval: string;
+  comment: string;
 
   constructor() {
     super();
@@ -146,17 +154,19 @@ export default class RegistryComp extends Vue {
       {val: 4, name: "テスト"},
       {val: 5, name: "資料作成"},
     ];
+
+    this.comment = "";
   }
 
   onAddRow() {
-    //const newtask = {id: this.taskrows.length + 1, name: "", age: 0, role: ""};
     const newtask = new Taskinfo();
-    //taskrows.push(new Taskinfo(id: taskrows.length + 1, name: "", age: 0, role: ""));
+    newtask.id = this.taskrows.length;
     this.taskrows.push(newtask);
   }
 
   onRemoveRow(index: number) {
     console.log(index);
+    this.taskrows.splice(index, 1);
   }
 
   async onSubmit() {
@@ -178,6 +188,7 @@ export default class RegistryComp extends Vue {
       ]
     };
     console.log(data);
+      console.log(this.taskrows);
 
       const param = {
         method: "POST",
