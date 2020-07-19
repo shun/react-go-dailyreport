@@ -48,49 +48,77 @@ const Registry = () => (
   </div>
 )
 
-const Category = () => (
-  <select>
-    <option value="0"></option>
-    <option value="1">資料作成</option>
-    <option value="2">設計</option>
-    <option value="3">コーディング</option>
-    <option value="4">テスト</option>
-    <option value="5">打ち合わせ</option>
-    <option value="6">その他</option>
-  </select>
-)
+function CategoryOptions () {
+  const categories = [
+    {val: 0, option: ""},
+    {val: 1, option: "資料作成"},
+    {val: 2, option: "設計"},
+    {val: 3, option: "コーディング"},
+    {val: 4, option: "テスト"},
+    {val: 5, option: "打ち合わせ"},
+    {val: 6, option: "その他"},
+  ];
 
-const TaskRow = () => (
+  return (
+    <select>
+    {categories.map((category) => (
+        <option key={category.val} value={category.val}>{category.option}</option>
+    ))}
+    </select>
+  )
+
+}
+
+function TaskRow({rowid}) {
+  const taskid="task[" + rowid + "]";
+  const estimateid="estimate[" + rowid + "]";
+
+  return (
   <tr>
     <td>
-      <Category/>
+      <CategoryOptions/>
     </td>
     <td>
-      <input id="task" type="text" size="40"></input>
+      <input id={taskid} type="text" size="40"></input>
     </td>
     <td>
-      <input id="estimate" type="text" placeholder="1.00" size="10"></input>
+      <input id={estimateid} type="text" placeholder="例:1.00" size="10"></input>
     </td>
   </tr>
-)
+  )
+}
+
+function TaskHead() {
+  return (
+    <thead>
+      <tr>
+        <th>カテゴリ</th>
+        <th>作業内容</th>
+        <th>作業時間[h]</th>
+      </tr>
+    </thead>
+  )
+}
+
+function TaskBody() {
+  const rownum = 10;
+  let arr = [];
+
+  for(let i = 0; i < rownum; i++) {
+    arr.push(<TaskRow key={i} rowid={i} />);
+  }
+  return (
+    <tbody>
+      {arr}
+    </tbody>
+  )
+}
 
 const Task = () => (
   <div>
     <table>
-      <thead>
-        <tr>
-          <th>カテゴリ</th>
-          <th>作業内容</th>
-          <th>作業時間[h]</th>
-        </tr>
-      </thead>
-      <tbody>
-        <TaskRow/>
-        <TaskRow/>
-        <TaskRow/>
-        <TaskRow/>
-        <TaskRow/>
-      </tbody>
+      <TaskHead/>
+      <TaskBody/>
     </table>
   </div>
 )

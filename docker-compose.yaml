@@ -10,6 +10,7 @@ x-common:
 
 services:
   frontend:
+    image: kudoshunsuke/react-dailyreport
     build:
       context: ./
       dockerfile: ./frontend/Dockerfile
@@ -20,6 +21,8 @@ services:
     volumes:
       - ./frontend/src:/home/node/frontapp/src
       - ./frontend/package.json:/home/node/frontapp/package.json
+    environment:
+      PORT: 8080
 
   backend:
     image: kudoshunsuke/golang-echo:1.14-buster
