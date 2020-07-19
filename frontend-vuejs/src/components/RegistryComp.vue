@@ -141,9 +141,9 @@ export default class RegistryComp extends Vue {
     super();
     this.defaultCateval = "0";
     this.taskrows = [
-      {id: 0, category: "0", task: "11", estimate: ""},
-      {id: 1, category: "0", task: "22", estimate: ""},
-      {id: 2, category: "0", task: "33", estimate: ""},
+      {id: 0, category: "0", task: "", estimate: ""},
+      {id: 1, category: "0", task: "", estimate: ""},
+      {id: 2, category: "0", task: "", estimate: ""},
     ];
 
     this.categories = [
