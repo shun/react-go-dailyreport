@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 export default class Registry extends Component {
   showAlert() {
+    const userinfo = document.getElementById('userinfo')
+    const tasks = document.getElementById('task')
+    debugger
     alert("登録完了しました");
   }
 
@@ -9,7 +12,7 @@ export default class Registry extends Component {
     return (
       <div>
         <h2>日報登録</h2>
-        <table>
+        <table id='userinfo'>
           <tbody>
           <tr>
             <th><span>氏名コード</span></th>
@@ -33,7 +36,7 @@ class Task extends Component {
   render() {
     return (
       <div>
-        <table>
+        <table id='tasks'>
           <TaskHead/>
           <TaskBody/>
         </table>

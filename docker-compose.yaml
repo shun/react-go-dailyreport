@@ -9,6 +9,27 @@ x-common:
   - &WORKUSR "app"
 
 services:
+  frontend-vuejs:
+    image: kudoshunsuke/vue-dailyreport
+    build:
+      context: ./frontend-vuejs
+      dockerfile: ./Dockerfile
+      args:
+        WORKUSR: node
+
+    ports:
+      - "18080:8080"
+    tty: true
+    command: bash
+    volumes:
+      - ./frontend-vuejs/src:/home/node/frontapp/src
+      - ./frontend-vuejs/package.json:/home/node/frontapp/package.json
+      - ./frontend-vuejs/tsconfig.json:/home/node/frontapp/tsconfig.json
+      - ./frontend-vuejs/vue.config.js:/home/node/frontapp/vue.config.js
+      - ./frontend-vuejs/yarn.lock:/home/node/frontapp/yarn.lock
+    #environment:
+    #  PORT: 8080
+
   frontend:
     image: kudoshunsuke/react-dailyreport
     build:

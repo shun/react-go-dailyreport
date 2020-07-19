@@ -140,12 +140,13 @@ func main() {
 	defer db.Close()
 
 	e := echo.New()
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"http:///192.168.1.161:18080/"},
-		AllowHeaders:     []string{"authorization", "Content-Type", "Access-Control-Allow-Origin"},
-		AllowCredentials: true,
-		AllowMethods:     []string{http.MethodGet, http.MethodPost},
-	}))
+	e.Use(middleware.CORS())
+	//e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	//	AllowOrigins:     []string{"http:///192.168.1.161:18080/"},
+	//	AllowHeaders:     []string{"authorization", "Content-Type", "Access-Control-Allow-Origin"},
+	//	AllowCredentials: true,
+	//	AllowMethods:     []string{http.MethodGet, http.MethodPost},
+	//}))
 
 	e.POST("/users/:id/reports/registry", createReport)
 
