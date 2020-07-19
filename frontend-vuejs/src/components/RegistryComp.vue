@@ -86,6 +86,14 @@
       <v-row justify="center">
         <v-btn color="error" @click="onSubmit" x-large width="200">登録</v-btn>
       </v-row>
+      <v-snackbar
+        v-model="snackbar"
+        :timeout="snackbarto"
+        :top=true
+        :color="snackbarcolor"
+      >
+        {{snackbarmsg}}
+      </v-snackbar>
   </v-container>
 </template>
 
@@ -124,9 +132,9 @@ class Taskinfo {
 
   constructor() {
     this.id = -1;
-    this.name = "";
-    this.age = -1;
-    this.role = "";
+    this.category = "";
+    this.task = "";
+    this.estimate = "";
   }
 };
 
@@ -136,6 +144,31 @@ export default class RegistryComp extends Vue {
   categories: Category[];
   defaultCateval: string;
   comment: string;
+  snackbar: boolean;
+  snackbarto: number;
+  snackbarcolor: string;
+  snackbarmsg: string;
+
+  initialize() {
+    console.log("initialize");
+    this.defaultCateval = "0";
+    this.taskrows = [
+      {id: 0, category: "0", task: "", estimate: ""},
+      {id: 1, category: "0", task: "", estimate: ""},
+      {id: 2, category: "0", task: "", estimate: ""},
+    ];
+
+    this.categories = [
+      {val: 0, name: ""},
+      {val: 1, name: "打ち合わせ"},
+      {val: 2, name: "設計"},
+      {val: 3, name: "開発"},
+      {val: 4, name: "テスト"},
+      {val: 5, name: "資料作成"},
+    ];
+
+    this.comment = "";
+  }
 
   constructor() {
     super();
@@ -156,9 +189,15 @@ export default class RegistryComp extends Vue {
     ];
 
     this.comment = "";
+    this.snackbar = false;
+    this.snackbarto = 3000;
+    this.snackbarcolor = "success";
+    this.snackbarmsg = "";
+    this.initialize();
   }
 
   onAddRow() {
+    console.log("onAddRow");
     const newtask = new Taskinfo();
     newtask.id = this.taskrows.length;
     this.taskrows.push(newtask);
@@ -188,32 +227,40 @@ export default class RegistryComp extends Vue {
       ]
     };
     console.log(data);
-      console.log(this.taskrows);
+    console.log(this.taskrows);
 
-      const param = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-      };
+    const param = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    };
 
-      fetch("http://192.168.1.161:13000/users/111/reports/registry", param)
-      .then((res) => {
-        console.log(res);
-        if (!res.ok) {
-          throw Error(res.statusText);
-        }
-        return res;
-      })
-      .then((res) => {
-        console.log("[SUCCESS]");
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log("[ERROR]");
-        console.log(err);
-      });
+    //const self = this;
+    fetch("http://192.168.1.161:13000/users/111/reports/registry", param)
+    .then((res) => {
+      console.log(res);
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      return res;
+    })
+    .then((res) => {
+      console.log("[SUCCESS]");
+      console.log(res);
+      this.snackbar = true;
+      this.snackbarmsg = "日報の登録が完了しました。";
+      this.snackbarcolor = "success";
+      this.initialize();
+    })
+    .catch((err) => {
+      console.log("[ERROR]");
+      console.log(err);
+      this.snackbar = true;
+      this.snackbarmsg = "日報の登録が失敗しました。";
+      this.snackbarcolor = "error";
+    });
   }
 }
 </script>
