@@ -1,0 +1,59 @@
+<div class="p-formgroup-inline" style="margin: 30px 200px;">
+  <div class="p-field">
+    <span class="ui-float-label">
+      <input id="float-input-usercode" type="text" pInputText [(ngModel)]="usercode" />
+      <label for="float-input-usercode">氏名コード</label>
+    </span>
+  </div>
+
+  <div class="p-field">
+    <span class="ui-float-label">
+      <input id="float-input-username" type="text" pInputText [(ngModel)]="username" />
+      <label for="float-input-username">氏名</label>
+    </span>
+  </div>
+
+  <div>
+    <p-dropdown placeholder="所属を選択してください" [options]="shozokus" [(ngModel)]="shozoku" (onChange)="onChangeShozoku($event)"></p-dropdown>
+  </div>
+
+  <div>
+    <i class="pi pi-calendar" style="margin: 0px 10px 0px 10px"></i>
+    <p-calendar [(ngModel)]="registryDate" dateFormat="yy-mm-dd"></p-calendar>
+  </div>
+</div>
+
+<div style="margin: 0px 200px;">
+  <p-table [value]="reports">
+      <ng-template pTemplate="header">
+          <tr>
+              <th style="width: 20em;">カテゴリ</th>
+              <th style="width: 60em;">説明</th>
+              <th style="width: 16em;">工数</th>
+              <th style="width: 8em;">操作</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-report let-i="rowIndex">
+          <tr>
+              <td style="margin: 0pt auto;"><p-dropdown [options]="categories" (onChange)="onChangeCategory($event, i)"></p-dropdown></td>
+              <td><input class="ui-fluid full-width" type="text" pInputText [(ngModel)]="report.task" /></td>
+              <td><input class="p-fluid full-width" type="text" pInputText [(ngModel)]="report.estimate" /></td>
+              <td class="debug-border" style="margin: 0px auto;"><button pButton label="削除" (click)="onRemove($event, i)" ></button></td>
+          </tr>
+      </ng-template>
+  </p-table>
+  <div style="margin: 20px 0pt;">
+    <button pButton label="追加" (click)="onAppend()"></button>
+  <div>
+
+  <div style="margin: 20px 0pt;">
+    <textarea pInputTextarea [(ngModel)]="comment" [rows]="5" placeholder="追加報告がある場合はこちらに追記してください" style="width:100%;"></textarea>
+  <div>
+
+  <div class="" style="margin: 20px auto; display: block; width: 400px;">
+    <button pButton class="ui-button-success regitsry-button" label="登録" (click)="onRegistery()"></button>
+  </div>
+  <p-toast key="showtoast" position="top-right"></p-toast>
+</div>
+
+

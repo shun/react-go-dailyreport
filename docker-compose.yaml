@@ -9,6 +9,26 @@ x-common:
   - &WORKUSR "app"
 
 services:
+  frontend-angular:
+    image: kudoshunsuke/angular-dailyreport
+    build:
+      context: ./frontend-angular
+      dockerfile: ./Dockerfile
+      args:
+        WORKUSR: node
+
+    ports:
+      - "18080:8080"
+    tty: true
+    command: bash
+    volumes:
+      - ./frontend-angular/src:/home/node/frontapp/src
+    #  - ./frontend-angular/package.json:/home/node/frontapp/package.json
+    #  - ./frontend-angular/tsconfig.json:/home/node/frontapp/tsconfig.json
+    depends_on:
+      - db
+      - backend
+
   frontend-vuejs:
     image: kudoshunsuke/vue-dailyreport
     build:
@@ -27,8 +47,6 @@ services:
       - ./frontend-vuejs/tsconfig.json:/home/node/frontapp/tsconfig.json
       - ./frontend-vuejs/vue.config.js:/home/node/frontapp/vue.config.js
       - ./frontend-vuejs/yarn.lock:/home/node/frontapp/yarn.lock
-    #environment:
-    #  PORT: 8080
 
   frontend:
     image: kudoshunsuke/react-dailyreport

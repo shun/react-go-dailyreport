@@ -1,0 +1,24 @@
+<v-menu
+  v-model="showCalendar"
+  :close-on-content-click="false"
+  :nudge-right="40"
+  transition="scale-transition"
+  offset-y
+  min-width="90px"
+>
+  <template v-slot:activator="{ on }">
+    <v-text-field
+      v-model="selectedDate"
+      v-on="on"
+      :label="label"
+      :clearable="true"
+    >
+    </v-text-field>
+  </template>
+  <v-date-picker
+    v-model="selectedDate"
+    prepend-icon="event"
+    @input="onEndSelectedDate"
+  >
+  </v-date-picker>
+</v-menu>

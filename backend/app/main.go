@@ -92,6 +92,7 @@ func gormConnect() *gorm.DB {
 }
 
 func createReport(c echo.Context) error {
+	fmt.Printf("createReport")
 	report := new(Dailylreport)
 	if err := c.Bind(report); err != nil {
 		return err
