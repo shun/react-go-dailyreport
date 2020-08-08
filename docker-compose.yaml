@@ -1,8 +1,6 @@
 version: "3.7"
 
 x-common:
-  - &LOCALUID 1000
-  - &LOCALGID 1000
   - &DB_PASS "test"
   - &DB_USER "test"
   - &DB_NAME "testdb"
@@ -74,19 +72,20 @@ services:
     depends_on:
       - db
     environment:
-      LOCALGID: *LOCALGID
-      LOCALUID: *LOCALUID
       DB_NAME: *DB_NAME
       DB_USER: *DB_USER
       DB_PASS: *DB_PASS
       DB_HOST: db
       DB_PORT: 3306
       WORKUSR: *WORKUSR
+      TESTING: 1
+      TZ: Tokyo/Asia
     volumes:
       - ./backend/app:/home/app/app
       - ./backend/entrypoint.sh:/entrypoint.sh
-    command: ["go", "run", "main.go"]
+    command: ["go", "run", "server.go"]
     entrypoint: /entrypoint.sh
+    tty: true
     ports:
       - "13000:3000"
 
@@ -99,6 +98,7 @@ services:
       MYSQL_PASSWORD: *DB_PASS
       MYSQL_ALLOW_EMPTY_PASSWORD: 0
       MYSQL_INITDB_SKIP_TZINFO: 'yes'
+      TZ: Tokyo/Asia
 
     command: "mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
     volumes:

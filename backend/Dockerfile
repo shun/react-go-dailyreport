@@ -16,6 +16,7 @@ RUN apt update \
     && go get -u github.com/labstack/echo/... \
     && go get -u github.com/jinzhu/gorm \
     && go get -u github.com/go-sql-driver/mysql \
+    && go get -u github.com/stretchr/testify/assert \
     && useradd -m -p `echo "${WORKUSR}" | mkpasswd -s -m sha-512` -s /bin/bash ${WORKUSR} && gpasswd -a ${WORKUSR} sudo
 
 USER ${WORKUSR}
